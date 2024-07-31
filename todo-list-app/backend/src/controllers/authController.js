@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/users');
 
@@ -12,17 +12,16 @@ exports.signup = async (req, res) => {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    console.log('Creating new user');
     user = new User({
       email,
       password
     });
 
     await user.save();
-    console.log('User saved:', user);
+    console.log('User signed up successfully:', user);
     res.json({ message: 'User signed up successfully' });
   } catch (err) {
-    console.error('Error in signup:', err);
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -37,7 +36,16 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
+    console.log('Login attempt with email:', email);
+    console.log('User found:', user);
+
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log('Password comparison:', {
+      inputPassword: password,
+      storedPassword: user.password
+    });
+    console.log('Password match status:', isMatch);
+
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials' });
     }
@@ -45,7 +53,7 @@ exports.login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
     res.json({ token });
   } catch (err) {
-    console.error('Error in login:', err);
+    console.error(err);
     res.status(500).json({ message: 'Server error' });
   }
 };
@@ -65,34 +73,8 @@ exports.resetPassword = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
-
-    await user.save();
-    res.json({ message: 'Password reset successfully' });
-  } catch (err) {
-    console.error('Error in resetPassword:', err);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
-
-// Logout
-exports.logout = (req, res) => {
-  res.json({ message: 'User logged out' });
-};
-
-// Reset Password
-exports.resetPassword = async (req, res) => {
-  const { email, newPassword } = req.body;
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    
+    user.password = newPassword;
 
     await user.save();
     res.json({ message: 'Password reset successfully' });
