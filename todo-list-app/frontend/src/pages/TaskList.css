@@ -1,0 +1,22 @@
+
+.task-table {
+    margin-top: 20px;
+    border-radius: 8px;
+  }
+  
+  .task-table thead {
+    background-color: #f8f9fa;
+  }
+  
+  .task-table th, .task-table td {
+    text-align: center;
+  }
+  
+  .task-table td {
+    vertical-align: middle;
+  }
+  
+  .ml-2 {
+    margin-left: 8px;
+  }
+  

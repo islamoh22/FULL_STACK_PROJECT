@@ -1,0 +1,47 @@
+.header-navbar {
+  margin-bottom: 20px;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #343a40;
+}
+
+.header-link {
+  margin-left: 15px;
+  font-size: 1rem;
+  color: #343a40;
+}
+
+.header-link:hover {
+  color: #007bff;
+}
+
+.header-navbar .ml-auto {
+  margin-left: auto;
+}
+
+.logout-button {
+  margin-left: 1rem;
+  border: 1px solid #007bff; /* Framed look */
+  color: #007bff;
+}
+
+.logout-button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.reset-password-button {
+  border: 1px solid #6c757d; /* Framed look */
+  color: #6c757d;
+}
+
+.reset-password-button:hover {
+  background-color: #6c757d;
+  color: #fff;
+}

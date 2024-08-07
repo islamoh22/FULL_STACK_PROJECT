@@ -86,15 +86,22 @@ exports.deleteTask = async (req, res) => {
     }
   };
 
-// Mark a task as completed
+// Mark a task as completed or not completed
 exports.completeTask = async (req, res) => {
   try {
-    let task = await Task.findById(req.params.id);
+    const taskId = req.params.id;
+    const { completed } = req.body;
+
+    if (completed === undefined) {
+      return res.status(400).json({ message: 'Completed status must be provided' });
+    }
+
+    let task = await Task.findById(taskId);
     if (!task || task.user_id.toString() !== req.user.id) {
       return res.status(404).json({ message: 'Task not found' });
     }
 
-    task.completed = true;
+    task.completed = completed;
     task.updated_at = Date.now();
 
     task = await task.save();
@@ -104,3 +111,4 @@ exports.completeTask = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+
