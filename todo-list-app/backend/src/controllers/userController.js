@@ -1,5 +1,5 @@
 const User = require('../models/users');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Get User (Example)
 exports.getUser = async (req, res) => {

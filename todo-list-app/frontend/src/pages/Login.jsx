@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Container, Form, Button } from 'react-bootstrap';
 
-const Login = () => {
+const Login = ({ onLogin }) => { // Accept the handleLogin function as a prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -14,6 +14,7 @@ const Login = () => {
       const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
       localStorage.setItem('token', response.data.token);
       alert('Login successful!');
+      onLogin(); // Call the handleLogin function to update the header
       navigate('/tasks');
     } catch (error) {
       console.error('Error logging in', error);

@@ -1,23 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Navbar, Nav, Button } from 'react-bootstrap';
-import './Header.css'; // Import the CSS file for custom styles
+import './Header.css';
 
-const Header = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+const Header = ({ isAuthenticated, onLogout }) => {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // Check if user is authenticated
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    setIsAuthenticated(false);
-    navigate('/login');
-  };
+  const location = useLocation();
 
   return (
     <Navbar bg="light" expand="lg" className="header-navbar">
@@ -27,10 +15,12 @@ const Header = () => {
         <Nav className="ml-auto">
           {isAuthenticated ? (
             <>
-              <Nav.Link as={Link} to="/reset-password" className="header-link">
-                <Button variant="outline-secondary" className="reset-password-button">Reset Password</Button>
-              </Nav.Link>
-              <Button variant="outline-primary" onClick={handleLogout} className="logout-button">Logout</Button>
+              {location.pathname !== '/reset-password' && (
+                <Nav.Link as={Link} to="/reset-password" className="header-link">
+                  <Button variant="outline-secondary" className="reset-password-button">Reset Password</Button>
+                </Nav.Link>
+              )}
+              <Button variant="outline-primary" onClick={() => { onLogout(); navigate('/login'); }} className="logout-button">Logout</Button>
             </>
           ) : (
             <>
